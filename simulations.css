@@ -1,0 +1,626 @@
+/* ============================================================================
+   CHAKRAVYUH AI VIBE CODING CHALLENGE - SMART ENTC PLATFORM
+   VIRTUAL ELECTRONICS LAB - MODERN CIRCUITVERSE AI STYLE
+   Matches exact reference design with glassmorphism, gradient traces, and toggle switches
+   ============================================================================ */
+
+/* ----------------------------------------------------------------------------
+   1. LAB SECTION HEADER
+   ---------------------------------------------------------------------------- */
+.lab-section {
+  position: relative;
+  padding: 100px 0 90px 0;
+  z-index: 10;
+}
+
+.lab-top-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2.5rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.lab-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lab-micro-tag {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--neon-cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.lab-main-title {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--text-white);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.lab-header-desc {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  max-width: 480px;
+  line-height: 1.55;
+}
+
+/* Experiment Selection Bar */
+.lab-experiments-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  margin-bottom: 2rem;
+  scrollbar-width: thin;
+}
+
+.lab-exp-pill {
+  padding: 0.6rem 1.15rem;
+  border-radius: 9999px;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--trans-fast);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.lab-exp-pill:hover {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: rgba(56, 189, 248, 0.35);
+  color: var(--text-white);
+}
+
+.lab-exp-pill.active {
+  background: rgba(0, 242, 254, 0.15);
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.25);
+}
+
+/* ----------------------------------------------------------------------------
+   2. TWO-PANEL WORKBENCH (REFERENCE DESIGN)
+   ---------------------------------------------------------------------------- */
+.circuitverse-workbench {
+  display: grid;
+  grid-template-columns: 0.95fr 1.35fr;
+  gap: 2rem;
+  align-items: stretch;
+}
+
+/* Left Panel: LAB CONTROLS */
+.cv-panel-left {
+  background: #090e1c;
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  border-radius: 20px;
+  padding: 2.2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+
+.cv-panel-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--neon-cyan);
+  margin-bottom: 0.4rem;
+}
+
+.cv-panel-heading {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-white);
+  letter-spacing: -0.02em;
+  margin-bottom: 1.75rem;
+}
+
+.cv-controls-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.cv-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.cv-field-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Dropdown Select */
+.cv-select-box {
+  width: 100%;
+  padding: 0.85rem 1.1rem;
+  border-radius: 12px;
+  background: #0e1529;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-white);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1.2em;
+  transition: all var(--trans-fast);
+}
+
+.cv-select-box:focus {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+}
+
+/* Input Toggle Switches (iOS / Neon Style) */
+.cv-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.cv-toggle-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.cv-toggle-val-high {
+  color: var(--neon-cyan);
+}
+
+.cv-toggle-val-low {
+  color: var(--text-dim);
+}
+
+/* The Switch Pill */
+.cv-switch {
+  position: relative;
+  width: 52px;
+  height: 28px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.cv-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.cv-slider-track {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 34px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cv-slider-track::before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #94a3b8;
+  border-radius: 50%;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cv-switch input:checked + .cv-slider-track {
+  background-color: #00f2fe;
+  border-color: #00f2fe;
+  box-shadow: 0 0 16px rgba(0, 242, 254, 0.6);
+}
+
+.cv-switch input:checked + .cv-slider-track::before {
+  transform: translateX(24px);
+  background-color: #040814;
+}
+
+/* Tip & Bottom CTA */
+.cv-tip-text {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  font-style: italic;
+  line-height: 1.45;
+  margin-top: 0.5rem;
+}
+
+.cv-complete-btn {
+  margin-top: 2rem;
+  width: 100%;
+  padding: 0.95rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #00f2fe 0%, #38bdf8 50%, #34d399 100%);
+  color: #040814;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 0 25px rgba(0, 242, 254, 0.4);
+  transition: all var(--trans-fast);
+}
+
+.cv-complete-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 35px rgba(0, 242, 254, 0.7);
+}
+
+.cv-complete-btn.completed {
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid var(--neon-emerald);
+  color: var(--neon-emerald);
+  box-shadow: none;
+}
+
+/* ----------------------------------------------------------------------------
+   3. RIGHT PANEL: LIVE CIRCUIT SIMULATION STAGE
+   ---------------------------------------------------------------------------- */
+.cv-panel-right {
+  background: #090e1c;
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  border-radius: 20px;
+  padding: 2.2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+
+/* Sub-nav Tabs (Circuit view, Truth table, Explain output) */
+.cv-tabs-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.75rem;
+}
+
+.cv-subtab-btn {
+  padding: 0.5rem 1.15rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--bg-glass-border);
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--trans-fast);
+}
+
+.cv-subtab-btn:hover {
+  color: var(--text-white);
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.cv-subtab-btn.active {
+  background: var(--neon-cyan);
+  color: #040814;
+  font-weight: 700;
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 16px rgba(0, 242, 254, 0.4);
+}
+
+/* Stage Box */
+.cv-stage-box {
+  background: #060b17;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-height: 320px;
+  position: relative;
+}
+
+.cv-stage-tag {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.truth-table-current {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-top: 1.25rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(0, 242, 254, 0.2);
+  border-radius: 10px;
+  background: rgba(0, 242, 254, 0.06);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.truth-table-current strong {
+  color: var(--text-white);
+}
+
+.truth-table-result {
+  color: var(--neon-cyan);
+  font-weight: 700;
+}
+
+.truth-table-help,
+.truth-table-legend {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.truth-table-help {
+  margin: 0.75rem 0;
+}
+
+.truth-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.truth-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.truth-table th,
+.truth-table td {
+  padding: 0.55rem 0.7rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.truth-table th {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.truth-table td {
+  color: var(--text-primary);
+}
+
+.truth-table .row-active {
+  background: rgba(0, 242, 254, 0.1);
+  box-shadow: inset 3px 0 var(--neon-cyan);
+}
+
+.truth-table .row-active td {
+  color: var(--text-white);
+  font-weight: 700;
+}
+
+.tt-badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.8rem;
+  min-height: 1.8rem;
+  border-radius: 7px;
+  background: rgba(148, 163, 184, 0.1);
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+.tt-1,
+.tt-out-1 {
+  color: #6ee7b7;
+}
+
+.tt-0,
+.tt-out-0 {
+  color: #cbd5e1;
+}
+
+.truth-table-legend {
+  margin-top: 0.75rem;
+}
+
+.truth-table-legend span {
+  color: var(--neon-cyan);
+}
+
+/* Visual Schematic Gate Layout */
+.cv-schematic-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 500px;
+  margin: 1.5rem 0;
+  position: relative;
+}
+
+.cv-wires-col-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 110px;
+  flex: 1;
+}
+
+.cv-wire-branch {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.cv-bit-indicator {
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--neon-cyan);
+}
+
+.cv-wire-line {
+  flex: 1;
+  height: 3px;
+  background: linear-gradient(90deg, #00f2fe, #818cf8);
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+  transition: all var(--trans-fast);
+}
+
+.cv-wire-line.low {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+}
+
+/* Center Gate Symbol Icon */
+.cv-center-symbol {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  font-weight: 300;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 25px rgba(0, 242, 254, 0.7);
+  user-select: none;
+}
+
+/* Output Wire & Indicator */
+.cv-wires-col-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+/* Big Capsule Output Badge */
+.cv-output-pill {
+  padding: 0.65rem 1.6rem;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: 1.5rem;
+  border: 1px solid transparent;
+  transition: all var(--trans-fast);
+}
+
+.cv-out-high {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #34d399;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+.cv-out-low {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-dim);
+}
+
+.cv-footer-disclaimer {
+  margin-top: 1.25rem;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+/* ----------------------------------------------------------------------------
+   4. TRUTH TABLE & EXPLAIN OUTPUT SUB-VIEWS
+   ---------------------------------------------------------------------------- */
+.cv-subview-container {
+  width: 100%;
+}
+
+.cv-explain-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.cv-explain-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--neon-cyan);
+  margin-bottom: 0.5rem;
+}
+
+.cv-explain-body {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .circuitverse-workbench {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .lab-main-title {
+    font-size: 2.2rem;
+  }
+  .cv-panel-left, .cv-panel-right {
+    padding: 1.5rem;
+  }
+  .cv-schematic-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}

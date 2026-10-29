@@ -4,6 +4,62 @@ window.ENTCEngagement = (function () {
   const SCORE_HISTORY_KEY = 'entc_quiz_scores_v1';
   const STUDY_STREAK_KEY = 'entc_study_streak_v1';
   const QUIZ_DURATION = 5 * 60;
+  const challengeChecks = {
+    blink: {
+      label: 'Arduino LED blink sketch',
+      placeholder: '// Write your setup() and loop() code here',
+      checks: [
+        [/pinMode\s*\([^;]*,\s*OUTPUT\s*\)/i, 'Set the LED pin as an output with pinMode(..., OUTPUT).'],
+        [/digitalWrite\s*\([^;]*,\s*HIGH\s*\)/i, 'Turn the LED on with digitalWrite(..., HIGH).'],
+        [/digitalWrite\s*\([^;]*,\s*LOW\s*\)/i, 'Turn the LED off with digitalWrite(..., LOW).'],
+        [/delay\s*\(\s*500\s*\)/i, 'Wait 500 milliseconds between LED changes.']
+      ]
+    },
+    'arduino-basics': {
+      label: 'Arduino push-button sketch',
+      placeholder: '// Configure the button and LED, then read the button in loop()',
+      checks: [
+        [/pinMode\s*\([^;]*,\s*INPUT_PULLUP\s*\)/i, 'Configure the button with INPUT_PULLUP.'],
+        [/digitalRead\s*\(/i, 'Read the button with digitalRead(...).'],
+        [/digitalRead\s*\([^)]*\)\s*={2,3}\s*LOW/i, 'Check for LOW when the pull-up button is pressed.'],
+        [/digitalWrite\s*\(/i, 'Use digitalWrite(...) to control the LED.']
+      ]
+    },
+    'c-logic': {
+      label: 'C function to count set bits',
+      placeholder: '// Write countSetBits(unsigned char value) here',
+      checks: [
+        [/countSetBits\s*\(/i, 'Create a countSetBits function.'],
+        [/while\s*\(\s*value\s*\)/i, 'Loop while value still contains set bits.'],
+        [/value\s*&=\s*(?:\(\s*unsigned\s+char\s*\)\s*)?\(?\s*value\s*-\s*1/i, 'Clear one set bit using value &= value - 1.'],
+        [/count\s*\+\+|(?:\+\+\s*count)/i, 'Increase the count each time a set bit is cleared.'],
+        [/return\s+count\s*;/i, 'Return the final count.']
+      ]
+    },
+    'embedded-timer': {
+      label: 'Non-blocking Arduino timer',
+      placeholder: '// Use millis() to toggle the LED without delay()',
+      checks: [
+        [/millis\s*\(\s*\)/i, 'Use millis() to read the current time.'],
+        [/(?:now|currentTime)\s*-\s*(?:lastChange|previousMillis|lastTime)\s*>=\s*500|(?:lastChange|previousMillis|lastTime)\s*<=?\s*(?:now|currentTime)\s*-\s*500/i, 'Check that 500 ms have elapsed since the previous change.'],
+        [/(?:ledOn|ledState|ledStateOn)\s*=\s*!\s*(?:ledOn|ledState|ledStateOn)/i, 'Toggle a stored LED state instead of using delay().'],
+        [/digitalWrite\s*\(/i, 'Write the updated state to the LED.'],
+        [/\bdelay\s*\(/i, 'Remove delay(); this challenge must remain non-blocking.', true]
+      ]
+    },
+    'logic-builder': {
+      label: '8-bit parity function',
+      placeholder: '// Write hasOddParity(unsigned char value) here',
+      checks: [
+        [/hasOddParity\s*\(/i, 'Create a hasOddParity function.'],
+        [/parity\s*\^=|parity\s*=\s*parity\s*\^/i, 'Use XOR to flip the parity for each set bit.'],
+        [/(?:value\s*>>|1[uUlL]?\s*<<)/i, 'Inspect each bit using a shift.'],
+        [/\b(?:8|8u|8U)\b/i, 'Check all 8 bits.'],
+        [/return\s+parity\s*;/i, 'Return the computed parity.']
+      ]
+    }
+  };
+
   const questions = [
     {
       prompt: 'A 5 V supply drives a 2 V LED at a target current of 15 mA. Which resistor is the closest standard value?',
@@ -94,11 +150,13 @@ window.ENTCEngagement = (function () {
     const completed = readList(CHALLENGE_STORAGE_KEY);
     grid.querySelectorAll('.challenge-card').forEach((card) => {
       const id = card.dataset.challenge;
-      const completeButton = card.querySelector('.challenge-complete-btn');
+      const config = challengeChecks[id];
+      const toggleButton = card.querySelector('.challenge-solve-toggle-btn');
+      if (!config || !toggleButton) return;
+
       const setComplete = (isComplete) => {
         card.classList.toggle('is-complete', isComplete);
-        completeButton.textContent = isComplete ? 'Completed' : 'Mark complete';
-        completeButton.setAttribute('aria-pressed', String(isComplete));
+        toggleButton.textContent = isComplete ? 'Solved · edit answer' : 'Solve challenge';
       };
 
       setComplete(completed.includes(id));
@@ -112,13 +170,116 @@ window.ENTCEngagement = (function () {
         reveal.hidden = !reveal.hidden;
         event.currentTarget.textContent = reveal.hidden ? 'Sample solution' : 'Hide solution';
       });
-      completeButton.addEventListener('click', () => {
-        const nextCompleted = readList(CHALLENGE_STORAGE_KEY);
-        if (!nextCompleted.includes(id)) nextCompleted.push(id);
-        writeValue(CHALLENGE_STORAGE_KEY, nextCompleted);
-        setComplete(true);
+
+      const workspace = createChallengeWorkspace(card, id, config, setComplete);
+      toggleButton.setAttribute('aria-expanded', 'false');
+      toggleButton.addEventListener('click', () => {
+        workspace.hidden = !workspace.hidden;
+        toggleButton.setAttribute('aria-expanded', String(!workspace.hidden));
+        toggleButton.textContent = workspace.hidden
+          ? (readList(CHALLENGE_STORAGE_KEY).includes(id) ? 'Solved · edit answer' : 'Solve challenge')
+          : 'Close editor';
+        if (!workspace.hidden) workspace.querySelector('textarea').focus();
       });
     });
+  }
+
+  function createChallengeWorkspace(card, id, config, setComplete) {
+    const workspace = document.createElement('section');
+    workspace.className = 'challenge-workspace';
+    workspace.hidden = true;
+    workspace.setAttribute('aria-label', `${config.label} answer editor`);
+
+    const label = document.createElement('label');
+    label.className = 'challenge-editor-label';
+    label.textContent = 'Your solution';
+
+    const editor = document.createElement('textarea');
+    editor.className = 'challenge-editor';
+    editor.rows = 10;
+    editor.maxLength = 12000;
+    editor.spellcheck = false;
+    editor.setAttribute('aria-label', `${config.label} code`);
+    editor.placeholder = config.placeholder;
+
+    const note = document.createElement('p');
+    note.className = 'challenge-editor-note';
+    note.textContent = 'Write your answer here. Check solution reviews the required steps; it does not compile or run your code.';
+
+    const feedback = document.createElement('p');
+    feedback.className = 'challenge-check-feedback';
+    feedback.setAttribute('role', 'status');
+    feedback.setAttribute('aria-live', 'polite');
+
+    const actions = document.createElement('div');
+    actions.className = 'challenge-editor-actions';
+
+    const checkButton = document.createElement('button');
+    checkButton.type = 'button';
+    checkButton.className = 'btn btn-xs btn-primary-neon';
+    checkButton.textContent = 'Check my solution';
+
+    const clearButton = document.createElement('button');
+    clearButton.type = 'button';
+    clearButton.className = 'btn btn-xs btn-outline-glass';
+    clearButton.textContent = 'Clear answer';
+
+    const helpText = document.createElement('ul');
+    helpText.className = 'challenge-checklist';
+    config.checks.forEach(([, description, isForbidden]) => {
+      const item = document.createElement('li');
+      item.textContent = `${isForbidden ? 'Avoid' : 'Include'}: ${description}`;
+      helpText.appendChild(item);
+    });
+
+    label.htmlFor = `challenge-answer-${id}`;
+    editor.id = label.htmlFor;
+    actions.append(checkButton, clearButton);
+    workspace.append(label, editor, note, actions, feedback, helpText);
+
+    const toggleButton = card.querySelector('.challenge-solve-toggle-btn');
+    toggleButton.before(workspace);
+
+    checkButton.addEventListener('click', () => {
+      const source = editor.value;
+      if (!source.trim()) {
+        feedback.textContent = 'Write your solution in the editor first.';
+        feedback.className = 'challenge-check-feedback is-incorrect';
+        return;
+      }
+
+      const missedChecks = config.checks.filter(([pattern, , isForbidden]) => (
+        isForbidden ? pattern.test(source) : !pattern.test(source)
+      ));
+      if (missedChecks.length) {
+        feedback.textContent = `Not quite yet. ${missedChecks[0][1]}`;
+        feedback.className = 'challenge-check-feedback is-incorrect';
+        return;
+      }
+
+      const nextCompleted = readList(CHALLENGE_STORAGE_KEY);
+      if (!nextCompleted.includes(id)) {
+        nextCompleted.push(id);
+        if (!writeValue(CHALLENGE_STORAGE_KEY, nextCompleted)) {
+          feedback.textContent = 'Your solution looks good, but progress could not be saved in this browser.';
+          feedback.className = 'challenge-check-feedback is-incorrect';
+          return;
+        }
+      }
+      setComplete(true);
+      feedback.textContent = 'Nice work! Your solution includes the key steps for this challenge.';
+      feedback.className = 'challenge-check-feedback is-correct';
+      if (window.ProgressBoard && window.ProgressBoard.refresh) window.ProgressBoard.refresh();
+    });
+
+    clearButton.addEventListener('click', () => {
+      editor.value = '';
+      feedback.textContent = '';
+      feedback.className = 'challenge-check-feedback';
+      editor.focus();
+    });
+
+    return workspace;
   }
 
   function initQuiz() {
