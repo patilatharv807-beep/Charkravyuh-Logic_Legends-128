@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart ENTC Learning & Innovation Platform | CHAKRAVYUH</title>
+  <meta name="description" content="Next-generation interactive learning platform for Electronics and Telecommunication Engineering (ENTC) students featuring AI tutors, virtual electronics labs, and real-world projects.">
+  <meta name="theme-color" content="#040711">
+
+  <!-- Google Fonts: Inter & Outfit & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/learn.css">
+  <link rel="stylesheet" href="css/simulations.css">
+  <link rel="stylesheet" href="css/progress-board.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <!-- Canvas Layer: Interactive Circuit Lines & AI Particles -->
+  <canvas id="circuit-bg-canvas"></canvas>
+
+  <!-- Ambient Glow Gradients -->
+  <div class="ambient-glow-layer"></div>
+
+  <!-- Application Shell -->
+  <div class="app-wrapper">
+
+    <!-- 1. NAVIGATION BAR -->
+    <header class="site-navbar">
+      <div class="container navbar-inner">
+        <!-- Brand Logo -->
+        <a href="#home" class="nav-brand">
+          <div class="brand-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+              <rect x="9" y="9" width="6" height="6"></rect>
+              <line x1="9" y1="1" x2="9" y2="4"></line>
+              <line x1="15" y1="1" x2="15" y2="4"></line>
+              <line x1="9" y1="20" x2="9" y2="23"></line>
+              <line x1="15" y1="20" x2="15" y2="23"></line>
+              <line x1="20" y1="9" x2="23" y2="9"></line>
+              <line x1="20" y1="14" x2="23" y2="14"></line>
+              <line x1="1" y1="9" x2="4" y2="9"></line>
+              <line x1="1" y1="14" x2="4" y2="14"></line>
+            </svg>
+          </div>
+          <div class="brand-text-wrap">
+            <span class="brand-title">Smart ENTC</span>
+            <span class="brand-tag">CHAKRAVYUH 2026</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav>
+          <ul class="nav-links-menu">
+            <li class="nav-link-item"><a href="#home" class="active">Home</a></li>
+            <li class="nav-link-item"><a href="#learn">Learn</a></li>
+            <li class="nav-link-item"><a href="#lab">Virtual Lab</a></li>
+            <li class="nav-link-item"><a href="#ai-assistant">AI Assistant</a></li>
+            <li class="nav-link-item"><a href="#coding">Coding Challenges</a></li>
+            <li class="nav-link-item"><a href="#quiz">Quiz</a></li>
+            <li class="nav-link-item"><a href="#projects">Projects</a></li>
+            <li class="nav-link-item"><a href="#dashboard">Progress Board</a></li>
+            <li class="nav-link-item"><a href="#about">About</a></li>
+          </ul>
+        </nav>
+
+        <!-- Navbar Right Utility Actions -->
+        <div class="nav-actions-right">
+          <!-- Sound FX Toggle -->
+          <button class="icon-action-btn active" id="sound-toggle-btn" title="Sound FX: Enabled">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            </svg>
+          </button>
+
+          <!-- Launch Dedicated Lab Page Button -->
+          <a href="lab.html" class="btn btn-sm btn-primary-neon d-none d-md-inline-flex" title="Open Dedicated Lab Page">
+            ⚡ Launch Lab ↗
+          </a>
+
+          <!-- Mobile Hamburger Toggle -->
+          <button class="mobile-nav-toggle" id="mobile-nav-toggle-btn" aria-label="Toggle navigation menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile Drawer Menu -->
+    <div class="mobile-drawer" id="mobile-drawer-menu">
+      <a href="#home" class="mobile-nav-link active">Home <span>➔</span></a>
+      <a href="#learn" class="mobile-nav-link">Learn Modules <span>➔</span></a>
+      <a href="lab.html" class="mobile-nav-link">Dedicated Virtual Lab <span>↗</span></a>
+      <a href="#ai-assistant" class="mobile-nav-link">AI Assistant <span>➔</span></a>
+      <a href="#coding" class="mobile-nav-link">Coding Challenges <span>➔</span></a>
+      <a href="#quiz" class="mobile-nav-link">Quiz Arena <span>➔</span></a>
+      <a href="#projects" class="mobile-nav-link">Real-World Projects <span>➔</span></a>
+      <a href="#dashboard" class="mobile-nav-link">Progress Board &amp; Dossier <span>➔</span></a>
+      <a href="progress.html" class="mobile-nav-link">Dedicated Dossier Page <span>↗</span></a>
+      <a href="#about" class="mobile-nav-link">About Project <span>➔</span></a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main>
+
+      <!-- 2. HERO SECTION -->
+      <section class="hero-section" id="home">
+        <div class="container hero-grid">
+          
+          <!-- Hero Left Content -->
+          <div class="hero-content">
+            <div class="hero-badge-wrap">
+              <span class="chip-badge">
+                <i class="badge-dot"></i> CHAKRAVYUH AI VIBE CODING 2026
+              </span>
+              <span class="chip-badge chip-badge-purple">
+                ⚡ NEXT-GEN ENTC PLATFORM
+              </span>
+            </div>
+
+            <h1 class="hero-title">
+              Smart ENTC <br>
+              <span class="gradient-text-cyan-purple">Learning & Innovation</span> <br>
+              Platform
+            </h1>
+
+            <p class="hero-subtitle">
+              Learn Electronics through AI, Interactive Simulations, Virtual Labs and Real-World Projects. Making complex theoretical concepts intuitive, tactile, and beginner-friendly.
+            </p>
+
+            <div class="hero-cta-group">
+              <a href="#learn" class="btn btn-primary-neon">
+                🚀 Start Learning
+              </a>
+              <a href="lab.html" class="btn btn-outline-glass">
+                ⚡ Dedicated Lab Page ↗
+              </a>
+              <a href="#ai-assistant" class="btn btn-outline-glass text-cyan">
+                🤖 Ask AI Assistant
+              </a>
+            </div>
+
+            <div class="hero-highlights">
+              <div class="highlight-item">
+                <span class="highlight-icon">✓</span>
+                <span>8 Core ENTC Modules</span>
+              </div>
+              <div class="highlight-item">
+                <span class="highlight-icon">✓</span>
+                <span>Browser Circuit Simulations</span>
+              </div>
+              <div class="highlight-item">
+                <span class="highlight-icon">✓</span>
+                <span>Real-Time Code Tester</span>
+              </div>
+              <div class="highlight-item">
+                <span class="highlight-icon">✓</span>
+                <span>AI Troubleshooting</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero Right: Interactive Live Circuit Workbench Preview -->
+          <div class="hero-visual-card">
+            <div class="hero-interactive-board">
+              <div class="board-header">
+                <span class="chip-badge">
+                  <i class="badge-dot"></i> LIVE INTERACTIVE BENCH
+                </span>
+                <div class="board-status">
+                  <span class="board-pulse-dot"></span>
+                  <span id="hero-dmm-val">5.00 V @ 18.2 mA</span>
+                </div>
+              </div>
+
+              <!-- Interactive Circuit Stage -->
+              <div class="hero-circuit-stage">
+                <!-- Power Node -->
+                <div class="hero-circuit-node">
+                  <div class="text-xs text-muted font-mono">5V DC</div>
+                  <div class="brand-icon-box" style="width:48px; height:48px;">
+                    <span style="font-size:1.4rem;">⚡</span>
+                  </div>
+                  <div class="text-xs font-bold text-cyan">VCC Source</div>
+                </div>
+
+                <!-- Wire 1 -->
+                <div class="hero-wire-line energized" id="hero-wire-1"></div>
+
+                <!-- Interactive Switch -->
+                <div class="hero-circuit-node">
+                  <div class="text-xs text-muted font-mono" id="hero-switch-state-text">ON (CLOSED)</div>
+                  <button class="hero-switch-btn active" id="hero-switch-toggle" title="Click to Toggle Switch!">
+                    🔘
+                  </button>
+                  <div class="text-xs font-bold text-muted">SPST Switch</div>
+                </div>
+
+                <!-- Wire 2 -->
+                <div class="hero-wire-line energized" id="hero-wire-2"></div>
+
+                <!-- Glowing LED -->
+                <div class="hero-circuit-node">
+                  <div class="text-xs text-muted font-mono">220Ω Limiter</div>
+                  <div class="hero-led-emitter glowing" id="hero-led">
+                    💡
+                  </div>
+                  <div class="text-xs font-bold text-cyan">Cyan Diode</div>
+                </div>
+              </div>
+
+              <div class="board-info-footer">
+                <span class="text-muted text-xs">👆 <em>Interactive: Click the switch above to toggle live current!</em></span>
+                <span class="font-mono text-xs text-cyan">Ohm's Law: I = (V - Vf)/R</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 3. STATISTICS SECTION WITH ANIMATED COUNTERS -->
+      <section class="stats-section">
+        <div class="container">
+          <div class="stats-grid">
+            
+            <div class="stat-counter-card">
+              <div class="stat-icon-wrapper stat-icon-cyan">
+                📚
+              </div>
+              <div class="stat-counter-info">
+                <div class="stat-counter-number" data-target="8" data-suffix=" Core">0</div>
+                <div class="stat-counter-label">Academic Topics</div>
+                <div class="stat-counter-desc">32 In-Depth Interactive Modules</div>
+              </div>
+            </div>
+
+            <div class="stat-counter-card">
+              <div class="stat-icon-wrapper stat-icon-purple">
+                🏆
+              </div>
+              <div class="stat-counter-info">
+                <div class="stat-counter-number" data-target="150" data-suffix="+">0</div>
+                <div class="stat-counter-label">Practice Questions</div>
+                <div class="stat-counter-desc">Timed MCQ & Circuit Schematics</div>
+              </div>
+            </div>
+
+            <div class="stat-counter-card">
+              <div class="stat-icon-wrapper stat-icon-emerald">
+                ⚡
+              </div>
+              <div class="stat-counter-info">
+                <div class="stat-counter-number" data-target="8" data-suffix=" Labs">0</div>
+                <div class="stat-counter-label">Virtual Labs</div>
+                <div class="stat-counter-desc">LED, Gates, PIR & Temperature</div>
+              </div>
+            </div>
+
+            <div class="stat-counter-card">
+              <div class="stat-icon-wrapper stat-icon-amber">
+                🤖
+              </div>
+              <div class="stat-counter-info">
+                <div class="stat-counter-number" data-target="24" data-suffix="/7">0</div>
+                <div class="stat-counter-label">AI CircuitBot</div>
+                <div class="stat-counter-desc">Deep Domain Hardware Assistant</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. MODERN ANIMATED FEATURE CARDS -->
+      <section class="features-section">
+        <div class="container">
+          
+          <div class="section-header-centered">
+            <div class="section-tag">
+              <span class="chip-badge">ENGINEERED FOR EXCELLENCE</span>
+            </div>
+            <h2 class="section-title">
+              Empowering Future <br>
+              <span class="gradient-text-cyan">Electronics Engineers</span>
+            </h2>
+            <p class="section-description">
+              Move beyond dry textbooks with hands-on browser simulations, interactive signal visualizers, and instant AI hardware feedback.
+            </p>
+          </div>
+
+          <div class="features-grid">
+            
+            <div class="feature-box">
+              <div>
+                <div class="feature-icon-bubble">🤖</div>
+                <h3 class="feature-title">AI Circuit Assistant</h3>
+                <p class="feature-desc">
+                  Ask CircuitBot any question from Boolean simplification to debugging UART baud rates. Get instant step-by-step guidance with syntax-highlighted code.
+                </p>
+              </div>
+              <a href="#ai-assistant" class="feature-link-pill">
+                Interact with AI <span>➔</span>
+              </a>
+            </div>
+
+            <div class="feature-box">
+              <div>
+                <div class="feature-icon-bubble">⚡</div>
+                <h3 class="feature-title">Virtual Electronics Lab</h3>
+                <p class="feature-desc">
+                  Simulate LED current limiting, logic gates (AND, OR, NOT, XOR), LM35 thermal fans, and PIR motion sensors with live digital multimeter readings.
+                </p>
+              </div>
+              <a href="lab.html" class="feature-link-pill">
+                Open Dedicated Lab Page <span>↗</span>
+              </a>
+            </div>
+
+            <div class="feature-box">
+              <div>
+                <div class="feature-icon-bubble">💻</div>
+                <h3 class="feature-title">Coding Challenges</h3>
+                <p class="feature-desc">
+                  Write Arduino C++ firmware, bitwise GPIO register operations, and PWM controllers directly in your browser with automated test suite validation.
+                </p>
+              </div>
+              <a href="#coding" class="feature-link-pill">
+                Solve Code Labs <span>➔</span>
+              </a>
+            </div>
+
+            <div class="feature-box">
+              <div>
+                <div class="feature-icon-bubble">📖</div>
+                <h3 class="feature-title">8 Comprehensive Domains</h3>
+                <p class="feature-desc">
+                  Curated modules in Digital Electronics, Logic Gates, Arduino, Sensors, IoT, Communication Systems, Microcontrollers, and DSP.
+                </p>
+              </div>
+              <a href="#learn" class="feature-link-pill">
+                Explore Curriculum <span>➔</span>
+              </a>
+            </div>
+
+            <div class="feature-box">
+              <div>
+                <div class="feature-icon-bubble">🚀</div>
+                <h3 class="feature-title">Real-World Projects</h3>
+                <p class="feature-desc">
+                  Explore complete industrial architectures including Smart Home Automation, Adaptive Traffic Systems, AgriTech Irrigation, and Weather Stations.
+                </p>
+              </div>
+              <a href="#projects" class="feature-link-pill">
+                Inspect Schematics <span>➔</span>
+              </a>
+            </div>
+
+            <div class="feature-box">
+              <div>
+                <div class="feature-icon-bubble">📊</div>
+                <h3 class="feature-title">Student Analytics</h3>
+                <p class="feature-desc">
+                  Track technical domain mastery, maintain your daily study streak, test yourself in timed quiz arenas, and unlock prestigious engineering badges.
+                </p>
+              </div>
+              <a href="#dashboard" class="feature-link-pill">
+                View Performance <span>➔</span>
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 5. LEARN SECTION (MODULE 2) -->
+      <section class="learn-section" id="learn">
+        <div class="container">
+          
+          <div class="section-header-centered">
+            <div class="section-tag">
+              <span class="chip-badge">CURATED CURRICULUM</span>
+            </div>
+            <h2 class="section-title">
+              Interactive ENTC <br>
+              <span class="gradient-text-cyan-purple">Core Disciplines</span>
+            </h2>
+            <p class="section-description">
+              Select any core engineering domain below to launch in-depth conceptual breakdowns, interactive circuit animations, formula cheat sheets, and mastery validation quizzes.
+            </p>
+          </div>
+
+          <div class="learn-cards-grid" id="learn-topics-grid">
+            <!-- Rendered dynamically by js/learn.js -->
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 6. VIRTUAL ELECTRONICS LAB (MODULE 3) -->
+      <section class="lab-section" id="lab">
+        <div class="container">
+          
+          <!-- Top Section Header Matching Reference Image -->
+          <div class="lab-top-header">
+            <div class="lab-title-group">
+              <span class="lab-micro-tag">EXPERIMENT WITHOUT LIMITS</span>
+              <h2 class="lab-main-title">Virtual electronics lab</h2>
+            </div>
+            <div class="d-flex flex-col align-end gap-2">
+              <p class="lab-header-desc">
+                Change inputs, test logic, and observe outputs instantly. This browser-based demo needs no physical components.
+              </p>
+              <a href="lab.html" class="btn btn-xs btn-outline-glass">
+                ↗ Open in Dedicated Full-Screen Page
+              </a>
+            </div>
+          </div>
+
+          <!-- Top Experiment Navigation Selector -->
+          <div class="lab-experiments-selector">
+            <button class="lab-exp-pill active" data-lab="AND">🔀 AND Gate</button>
+            <button class="lab-exp-pill" data-lab="OR">🔀 OR Gate</button>
+            <button class="lab-exp-pill" data-lab="NOT">🔄 NOT Gate</button>
+            <button class="lab-exp-pill" data-lab="XOR">⚡ XOR Gate</button>
+            <button class="lab-exp-pill" data-lab="NAND">🌌 NAND (Universal)</button>
+            <button class="lab-exp-pill" data-lab="NOR">🌌 NOR (Universal)</button>
+            <button class="lab-exp-pill" data-lab="led">💡 LED Circuit</button>
+            <button class="lab-exp-pill" data-lab="lm35">🌡️ LM35 Temp Sensor</button>
+            <button class="lab-exp-pill" data-lab="ldr">☀️ LDR Light Sensor</button>
+            <button class="lab-exp-pill" data-lab="pir">🚨 PIR Motion Sensor</button>
+          </div>
+
+          <!-- The Two-Panel CircuitVerse Style Workbench -->
+          <div class="circuitverse-workbench">
+            <!-- Left: LAB CONTROLS -->
+            <div id="lab-canvas-container"></div>
+
+            <!-- Right: LIVE CIRCUIT SIMULATION -->
+            <div id="lab-controls-container"></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 7. PROGRESS BOARD & ENGINEERING DOSSIER (BEFORE ABOUT) -->
+      <section class="progress-board-section" id="dashboard">
+        <!-- Anchor for #progress-board -->
+        <span id="progress-board" style="position: absolute; top: -80px;"></span>
+        <div class="container">
+          
+          <div class="progress-header-grid">
+            <div class="progress-header-left">
+              <span class="progress-header-tag">
+                <span>⚡</span> ACADEMIC PROGRESS &amp; HARDWARE DOSSIER
+              </span>
+              <h2 class="progress-header-title">
+                Engineering Progress &amp; <br>
+                <span class="gradient-text-cyan-purple">Virtual Lab Dossier</span>
+              </h2>
+              <p class="progress-header-desc">
+                Track your full curriculum mastery, inspect certified virtual lab test reports, review completed theory notes, calculate real-world project component pricing, and analyze hardware working principles with connection pinouts.
+              </p>
+            </div>
+            <div class="progress-header-actions">
+              <a href="progress.html" class="btn btn-sm btn-outline-glass" title="Open in Dedicated Standalone Page">
+                ↗ Full-Screen Dossier
+              </a>
+              <a href="#lab" class="btn btn-sm btn-primary-neon">
+                ⚡ Jump to Lab
+              </a>
+            </div>
+          </div>
+
+          <!-- Dynamic Container Rendered by js/progress-board.js -->
+          <div id="progress-board-content"></div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- IN-DEPTH TOPIC DETAIL MODAL / DRAWER -->
+    <div id="learn-modal" class="learn-modal-backdrop hidden" role="dialog" aria-modal="true">
+      <div class="learn-modal-dialog">
+        
+        <div class="modal-header-bar">
+          <div class="modal-header-info">
+            <div class="modal-header-badges">
+              <span class="chip-badge" id="modal-topic-category">Hardware</span>
+              <span class="chip-badge chip-badge-purple" id="modal-topic-level">Beginner</span>
+            </div>
+            <h3 class="modal-topic-title" id="modal-topic-title">Topic Title</h3>
+          </div>
+          <button class="modal-close-btn" id="modal-close-btn" aria-label="Close modal">✕</button>
+        </div>
+
+        <div class="modal-tabs-nav">
+          <button class="modal-tab-btn active" data-tab="concepts">
+            📖 Concepts & Equations
+          </button>
+          <button class="modal-tab-btn" data-tab="diagram">
+            ⚡ Interactive Diagram
+          </button>
+          <button class="modal-tab-btn" data-tab="realworld">
+            🚀 Industry Applications
+          </button>
+          <button class="modal-tab-btn" data-tab="quiz">
+            🏆 Short Mini-Quiz
+          </button>
+        </div>
+
+        <div class="modal-body-content">
+          <div class="tab-pane active" id="tab-concepts"></div>
+          <div class="tab-pane" id="tab-diagram"></div>
+          <div class="tab-pane" id="tab-realworld"></div>
+          <div class="tab-pane" id="tab-quiz"></div>
+        </div>
+
+        <div class="modal-footer-bar">
+          <button class="btn btn-sm btn-outline-glass" onclick="window.LearnModule.closeModal();">
+            Close Viewer
+          </button>
+          <button class="btn btn-sm btn-primary-neon" id="btn-mark-topic-complete">
+            Mark Module as Completed
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 7. SITE FOOTER -->
+    <footer class="site-footer" id="about">
+      <div class="container">
+        
+        <div class="footer-top-grid">
+          <div class="footer-brand-col">
+            <div class="nav-brand">
+              <div class="brand-icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                  <rect x="9" y="9" width="6" height="6"></rect>
+                  <line x1="9" y1="1" x2="9" y2="4"></line>
+                  <line x1="15" y1="1" x2="15" y2="4"></line>
+                  <line x1="9" y1="20" x2="9" y2="23"></line>
+                  <line x1="15" y1="20" x2="15" y2="23"></line>
+                  <line x1="20" y1="9" x2="23" y2="9"></line>
+                  <line x1="20" y1="14" x2="23" y2="14"></line>
+                  <line x1="1" y1="9" x2="4" y2="9"></line>
+                  <line x1="1" y1="14" x2="4" y2="14"></line>
+                </svg>
+              </div>
+              <div class="brand-text-wrap">
+                <span class="brand-title">Smart ENTC</span>
+                <span class="brand-tag">INNOVATION PLATFORM</span>
+              </div>
+            </div>
+            <p class="footer-desc">
+              Developed for the CHAKRAVYUH AI Vibe Coding Challenge. Designed to transform complex telecommunication and electronics engineering education through intuitive simulation, real-world case studies, and artificial intelligence.
+            </p>
+            <div class="team-badge-pill">
+              🏆 CHAKRAVYUH AI Vibe Coding 2026
+            </div>
+          </div>
+
+          <div>
+            <h4 class="footer-col-title">Platform Hub</h4>
+            <ul class="footer-nav-list">
+              <li><a href="#home">Home Arena</a></li>
+              <li><a href="#learn">Learn Modules</a></li>
+              <li><a href="lab.html">Virtual Labs ↗</a></li>
+              <li><a href="#ai-assistant">AI CircuitBot</a></li>
+              <li><a href="#coding">Coding Challenges</a></li>
+              <li><a href="#quiz">Skill Quizzes</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="footer-col-title">Core Disciplines</h4>
+            <ul class="footer-nav-list">
+              <li><a href="#learn">Digital Electronics</a></li>
+              <li><a href="#learn">Embedded Systems & MCU</a></li>
+              <li><a href="#learn">Sensors & Transducers</a></li>
+              <li><a href="#learn">Internet of Things (IoT)</a></li>
+              <li><a href="#learn">Telecommunications</a></li>
+              <li><a href="#learn">Signal Processing (DSP)</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="footer-col-title">Institutional Info</h4>
+            <ul class="footer-nav-list">
+              <li><span class="text-white font-bold">Department of ENTC</span></li>
+              <li><span class="text-muted">Electronics & Telecommunication</span></li>
+              <li><a href="https://github.com" target="_blank" rel="noopener">GitHub Repository ↗</a></li>
+              <li><span class="text-muted">Mentor: Faculty Advisory Board</span></li>
+              <li><span class="text-muted">Engineering Student Innovators</span></li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="footer-bottom-bar">
+          <div>
+            © 2026 Smart ENTC Learning & Innovation Platform. CHAKRAVYUH AI Vibe Coding Challenge.
+          </div>
+          <div class="d-flex align-center gap-3">
+            <span>Built with HTML5 · CSS3 · JavaScript · Python</span>
+            <span class="text-cyan font-mono">v1.0.0</span>
+          </div>
+        </div>
+
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/audio.js"></script>
+  <script src="js/background.js"></script>
+  <script src="js/landing.js"></script>
+  <script src="js/learn-data.js"></script>
+  <script src="js/learn.js"></script>
+  <script src="js/simulations.js"></script>
+  <script src="js/progress-board.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.LearnModule) window.LearnModule.init();
+      if (window.VirtualLab) window.VirtualLab.init();
+      if (window.ProgressBoard) window.ProgressBoard.init();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Engineering Progress & Lab Report Board | Smart ENTC Platform</title>
+  <meta name="description" content="Official Student Progress Board, Virtual Lab Audit Report, Theory Notes, Hardware Pricing Estimator, and Wiring Diagnostics.">
+  <meta name="theme-color" content="#040711">
+
+  <!-- Google Fonts: Inter & Outfit & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/learn.css">
+  <link rel="stylesheet" href="css/simulations.css">
+  <link rel="stylesheet" href="css/progress-board.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <style>
+    body {
+      background-color: #060b17;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pb-standalone-navbar {
+      height: 72px;
+      background: rgba(9, 14, 28, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .pb-standalone-content {
+      flex: 1;
+      padding: 2.5rem 0 4rem 0;
+    }
+
+    .back-home-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 1rem;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all var(--trans-fast);
+      text-decoration: none;
+    }
+
+    .back-home-pill:hover {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      transform: translateX(-3px);
+    }
+
+    .pb-status-telemetry {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--neon-cyan);
+      padding: 0.35rem 0.85rem;
+      border-radius: 8px;
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+    }
+  </style>
+</head>
+<body>
+  <!-- Circuit Background Canvas -->
+  <canvas id="circuit-bg-canvas"></canvas>
+  <div class="ambient-glow-layer"></div>
+
+  <!-- Dedicated Standalone Header -->
+  <header class="pb-standalone-navbar">
+    <div class="d-flex align-center gap-3">
+      <a href="index.html#dashboard" class="back-home-pill">
+        <span>←</span>
+        <span>Back to Platform</span>
+      </a>
+
+      <div class="nav-brand" style="margin-left: 0.5rem;">
+        <div class="brand-icon-box" style="width: 36px; height: 36px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
+            <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+            <rect x="9" y="9" width="6" height="6"></rect>
+            <line x1="9" y1="1" x2="9" y2="4"></line>
+            <line x1="15" y1="1" x2="15" y2="4"></line>
+            <line x1="9" y1="20" x2="9" y2="23"></line>
+            <line x1="15" y1="20" x2="15" y2="23"></line>
+          </svg>
+        </div>
+        <div class="brand-text-wrap d-none d-sm-flex">
+          <span class="brand-title" style="font-size: 1.05rem;">Progress Board</span>
+          <span class="brand-tag">CHAKRAVYUH 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="d-flex align-center gap-3">
+      <div class="pb-status-telemetry d-none d-md-flex">
+        <span class="badge-dot"></span>
+        <span>STATUS: CERTIFIED AUDIT ACTIVE</span>
+      </div>
+
+      <a href="lab.html" class="btn btn-xs btn-outline-glass">
+        ⚡ Launch Lab ↗
+      </a>
+
+      <button class="icon-action-btn active" id="sound-toggle-btn" title="Toggle Sound FX">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="pb-standalone-content">
+    <div class="container">
+      
+      <div class="progress-header-grid">
+        <div class="progress-header-left">
+          <span class="progress-header-tag">
+            <span>⚡</span> ACADEMIC PROGRESS &amp; HARDWARE DOSSIER
+          </span>
+          <h1 class="progress-header-title">
+            Engineering Progress &amp; <br>
+            <span class="gradient-text-cyan-purple">Virtual Lab Dossier</span>
+          </h1>
+          <p class="progress-header-desc">
+            Complete academic overview for Electronics & Telecommunication Engineering: inspect test reports, completed theory chapters, realistic hardware BOM costs, and pinout wiring diagnostics.
+          </p>
+        </div>
+        <div class="progress-header-actions">
+          <button class="btn btn-sm btn-outline-glass" onclick="window.print()">
+            🖨️ Print Full Dossier
+          </button>
+          <a href="index.html#lab" class="btn btn-sm btn-primary-neon">
+            ⚡ Virtual Lab
+          </a>
+        </div>
+      </div>
+
+      <!-- Dynamic Progress Board Container -->
+      <div id="progress-board-content"></div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer" style="padding: 2.5rem 0; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+    <div class="container d-flex justify-between align-center flex-wrap gap-3">
+      <div class="text-xs text-muted">
+        © 2026 Smart ENTC Learning Platform · CHAKRAVYUH AI Vibe Coding Challenge.
+      </div>
+      <div class="d-flex align-center gap-3">
+        <a href="index.html" class="text-xs text-cyan">Return to Home</a>
+        <span class="text-dim">·</span>
+        <a href="lab.html" class="text-xs text-cyan">Virtual Lab</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/audio.js"></script>
+  <script src="js/background.js"></script>
+  <script src="js/learn-data.js"></script>
+  <script src="js/learn.js"></script>
+  <script src="js/simulations.js"></script>
+  <script src="js/progress-board.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.LearnModule) window.LearnModule.init();
+      if (window.ProgressBoard) window.ProgressBoard.init();
+    });
+  </script>
+</body>
+</html>
+

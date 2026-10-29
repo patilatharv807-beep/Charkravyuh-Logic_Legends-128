@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtual Electronics Lab | Smart ENTC Platform</title>
+  <meta name="description" content="Dedicated full-screen browser-based electronics and digital logic simulation workbench for ENTC students.">
+  <meta name="theme-color" content="#040711">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/simulations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <style>
+    /* Standalone Lab Page Specific Enhancements */
+    body {
+      background-color: #060b17;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .lab-standalone-navbar {
+      height: 72px;
+      background: rgba(9, 14, 28, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .lab-standalone-content {
+      flex: 1;
+      padding: 2.5rem 0 4rem 0;
+    }
+
+    .back-home-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 1rem;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all var(--trans-fast);
+      text-decoration: none;
+    }
+
+    .back-home-pill:hover {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      transform: translateX(-3px);
+    }
+
+    .lab-status-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--neon-cyan);
+      padding: 0.35rem 0.85rem;
+      border-radius: 8px;
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+    }
+  </style>
+</head>
+<body>
+  <!-- Circuit Background Canvas -->
+  <canvas id="circuit-bg-canvas"></canvas>
+  <div class="ambient-glow-layer"></div>
+
+  <!-- Dedicated Standalone Lab Header -->
+  <header class="lab-standalone-navbar">
+    <div class="d-flex align-center gap-3">
+      <a href="index.html" class="back-home-pill">
+        <span>←</span>
+        <span>Back to Platform</span>
+      </a>
+
+      <div class="nav-brand" style="margin-left: 0.5rem;">
+        <div class="brand-icon-box" style="width: 36px; height: 36px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
+            <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+            <rect x="9" y="9" width="6" height="6"></rect>
+          </svg>
+        </div>
+        <div class="brand-text-wrap">
+          <span class="brand-title" style="font-size: 0.95rem;">CircuitVerse AI</span>
+          <span class="brand-tag" style="font-size: 0.62rem;">ENTC VIRTUAL LAB</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex align-center gap-3">
+      <div class="lab-status-badge">
+        <span class="badge-dot"></span>
+        <span>Simulation Engine: Online (60 FPS)</span>
+      </div>
+
+      <!-- Sound Toggle -->
+      <button class="icon-action-btn active" id="sound-toggle-btn" title="Sound FX: Enabled">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        </svg>
+      </button>
+
+      <!-- Progress Board Link -->
+      <a href="progress.html" class="btn btn-sm btn-outline-glass">
+        📊 Lab Report &amp; Progress ↗
+      </a>
+
+      <a href="index.html#ai-assistant" class="btn btn-sm btn-primary-neon">
+        🤖 Ask AI
+      </a>
+    </div>
+  </header>
+
+  <!-- Lab Workspace Content -->
+  <main class="lab-standalone-content">
+    <div class="container">
+      
+      <!-- Top Section Header Matching Reference Image -->
+      <div class="lab-top-header">
+        <div class="lab-title-group">
+          <span class="lab-micro-tag">EXPERIMENT WITHOUT LIMITS</span>
+          <h1 class="lab-main-title">Virtual electronics lab</h1>
+        </div>
+        <p class="lab-header-desc">
+          Change inputs, test logic, and observe outputs instantly. This browser-based demo needs no physical components.
+        </p>
+      </div>
+
+      <!-- Top Experiment Navigation Selector -->
+      <div class="lab-experiments-selector">
+        <button class="lab-exp-pill active" data-lab="AND">🔀 AND Gate</button>
+        <button class="lab-exp-pill" data-lab="OR">🔀 OR Gate</button>
+        <button class="lab-exp-pill" data-lab="NOT">🔄 NOT Gate</button>
+        <button class="lab-exp-pill" data-lab="XOR">⚡ XOR Gate</button>
+        <button class="lab-exp-pill" data-lab="NAND">🌌 NAND (Universal)</button>
+        <button class="lab-exp-pill" data-lab="NOR">🌌 NOR (Universal)</button>
+        <button class="lab-exp-pill" data-lab="led">💡 LED Circuit</button>
+        <button class="lab-exp-pill" data-lab="lm35">🌡️ LM35 Temp Sensor</button>
+        <button class="lab-exp-pill" data-lab="ldr">☀️ LDR Light Sensor</button>
+        <button class="lab-exp-pill" data-lab="pir">🚨 PIR Motion Sensor</button>
+      </div>
+
+      <!-- The Two-Panel CircuitVerse Style Workbench -->
+      <div class="circuitverse-workbench">
+        <!-- Left: LAB CONTROLS -->
+        <div id="lab-canvas-container"></div>
+
+        <!-- Right: LIVE CIRCUIT SIMULATION -->
+        <div id="lab-controls-container"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="js/audio.js"></script>
+  <script src="js/background.js"></script>
+  <script src="js/landing.js"></script>
+  <script src="js/simulations.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.VirtualLab) {
+        window.VirtualLab.init();
+      }
+    });
+  </script>
+</body>
+</html>
+
